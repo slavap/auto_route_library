@@ -1273,10 +1273,18 @@ abstract class StackRouter extends RoutingController {
   /// that does not use [PageRoute] will not trigger this method
   void onPopPage(AutoRoutePage<Object?> page) {
     if (!_pages.remove(page)) return;
-    _updateSharedPathData(includeAncestors: true);
+    Map<String, dynamic> newQueryParams = {};
+    if (_pages.isNotEmpty) {
+      newQueryParams = getNewQueryParamsAfterPop(_pages.last) ?? {};
+    }
+    _updateSharedPathData(includeAncestors: true, queryParams: newQueryParams);
     if (isRouteDataActive(page.routeData)) {
       navigationHistory.rebuildUrl();
     }
+  }
+
+  Map<String, dynamic>? getNewQueryParamsAfterPop(AutoRoutePage<Object?> newPage) {
+    return null;
   }
 
   void _removeRoute(RouteMatch route, {bool notify = true}) {
