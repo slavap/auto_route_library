@@ -22,3 +22,7 @@ dev_dependencies:
   build_test: ^3.3.2
   source_gen_test:
   test:
+
+dependency_overrides:
+  auto_route:
+    path: ../auto_route
