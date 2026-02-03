@@ -1279,7 +1279,9 @@ abstract class StackRouter extends RoutingController {
     }
     _updateSharedPathData(includeAncestors: true, queryParams: newQueryParams);
     if (isRouteDataActive(page.routeData)) {
-      if (!navigationHistory.isUrlStateMarkedForReplace) navigationHistory.back();
+      if (navigationHistory.canNavigateBack && !navigationHistory.isUrlStateMarkedForReplace) {
+        navigationHistory.back(nofify: false);
+      }
       navigationHistory.rebuildUrl();
     }
   }

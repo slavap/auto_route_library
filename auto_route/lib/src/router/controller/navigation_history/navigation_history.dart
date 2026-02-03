@@ -8,7 +8,7 @@ class NavigationHistoryImpl extends NavigationHistory {
   NavigationHistoryImpl(StackRouter router);
 
   @override
-  void back() {
+  void back({bool notify = true}) {
     throw Exception("Stub implementation");
   }
 

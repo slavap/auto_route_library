@@ -92,7 +92,7 @@ abstract class NavigationHistory with ChangeNotifier {
   /// Navigate back one entry in history
   ///
   /// does nothing if history has only one entry
-  void back();
+  void back({bool notify = true});
 
   /// Navigate forward one entry in history
   ///
