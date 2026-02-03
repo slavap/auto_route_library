@@ -20,7 +20,7 @@ class NavigationHistoryImpl extends NavigationHistory {
 
   @override
   void back({bool notify = true}) {
-    _notufy = notify;
+    _notify = notify;
     try {
       _history.back();
     } finally {
