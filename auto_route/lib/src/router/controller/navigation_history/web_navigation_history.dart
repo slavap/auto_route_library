@@ -50,7 +50,7 @@ class NavigationHistoryImpl extends NavigationHistory {
 
   @override
   void pushPathState(Object? state) {
-    onNewUrlState(urlState.copyWith(pathState: state, notify: _notify));
+    onNewUrlState(urlState.copyWith(pathState: state), notify: _notify);
   }
 
   @override
