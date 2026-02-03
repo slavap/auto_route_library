@@ -1275,15 +1275,16 @@ abstract class StackRouter extends RoutingController {
     if (!_pages.remove(page)) return;
     Map<String, dynamic> newQueryParams = {};
     if (_pages.isNotEmpty) {
-      newQueryParams = getNewQueryParamsAfterPop(_pages.last) ?? {};
+      newQueryParams = getNewQueryParamsAfterPop(_pages.last, page) ?? {};
     }
     _updateSharedPathData(includeAncestors: true, queryParams: newQueryParams);
     if (isRouteDataActive(page.routeData)) {
+      navigationHistory.back();
       navigationHistory.rebuildUrl();
     }
   }
 
-  Map<String, dynamic>? getNewQueryParamsAfterPop(AutoRoutePage<Object?> newPage) {
+  Map<String, dynamic>? getNewQueryParamsAfterPop(AutoRoutePage<Object?> newPage, AutoRoutePage<Object?> oldPage) {
     return null;
   }
 
