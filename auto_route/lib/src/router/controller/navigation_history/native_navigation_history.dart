@@ -56,7 +56,7 @@ class NavigationHistoryImpl extends NavigationHistory {
   }
 
   @override
-  void back({bool notify = true}) {
+  void back() {
     if (canNavigateBack) {
       _isNavigatingBack = true;
       _entries.removeLast();

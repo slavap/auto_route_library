@@ -1197,8 +1197,10 @@ abstract class StackRouter extends RoutingController {
   @override
   RouteData get topRoute => _topMostRouter(ignorePagelessRoutes: true).current;
 
+  bool _fakeReportNoPagelessTopRoute = false;
+
   /// Whether the top-most route of this controller is page-less
-  bool get hasPagelessTopRoute => pagelessRoutesObserver.hasPagelessTopRoute;
+  bool get hasPagelessTopRoute => pagelessRoutesObserver.hasPagelessTopRoute && !_fakeReportNoPagelessTopRoute;
 
   @override
   void _updateSharedPathData({
@@ -1280,9 +1282,22 @@ abstract class StackRouter extends RoutingController {
     _updateSharedPathData(includeAncestors: true, queryParams: newQueryParams);
     if (isRouteDataActive(page.routeData)) {
       if (navigationHistory.canNavigateBack && !navigationHistory.isUrlStateMarkedForReplace) {
-        navigationHistory.back(notify: false);
+        // See https://github.com/Milad-Akarie/auto_route_library/issues/1839
+        navigationHistory.rebuildUrl();
+        final st = navigationHistory.urlState.copyWith();
+        // preserving PagelessTopRoute from closing by back() -> AutoRouterDelegate.setNewRoutePath()
+        _fakeReportNoPagelessTopRoute = true;
+        navigationHistory.back();
+        // back() could be async operation (on web it is always async), so we have to wait till it's done
+        Future.delayed(Duration(milliseconds: 200), () {
+          _fakeReportNoPagelessTopRoute = false;
+          if (navigationHistory.urlState.uri != st.uri) {
+            navigationHistory.onNewUrlState(st);
+          }
+        });
+      } else {
+        navigationHistory.rebuildUrl();
       }
-      navigationHistory.rebuildUrl();
     }
   }
 

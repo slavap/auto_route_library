@@ -15,17 +15,10 @@ class NavigationHistoryImpl extends NavigationHistory {
   final StackRouter router;
 
   final _history = window.history;
-  
-  bool _notify = true;
 
   @override
-  void back({bool notify = true}) {
-    _notify = notify;
-    try {
-      _history.back();
-    } finally {
-      _notify = true;
-    }
+  void back() {
+    _history.back();
   }
 
   int get _currentIndex {
@@ -50,7 +43,7 @@ class NavigationHistoryImpl extends NavigationHistory {
 
   @override
   void pushPathState(Object? state) {
-    onNewUrlState(urlState.copyWith(pathState: state), notify: _notify);
+    onNewUrlState(urlState.copyWith(pathState: state));
   }
 
   @override
